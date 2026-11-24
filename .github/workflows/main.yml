@@ -9,47 +9,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Unzip archive
-        run: unzip -q aether-client-1.21.4-v1.5.0.zip
-
-      - name: Patch missing fields
-        run: |
-          python3 -c '
-          import glob, re
-
-          for p in glob.glob("**/AetherConfig.java", recursive=True):
-              txt = open(p, encoding="utf-8").read()
-              add = """
-              public int accentColor = 0xFF7C4DFF;
-              public boolean showRadar = true;
-              public boolean showArmorHud = true;
-              public boolean showPotions = true;
-              public boolean showKeystrokes = true;
-              public boolean showWatermark = true;
-              public boolean showFps = true;
-              public boolean showCoords = true;
-              public boolean showDirection = true;
-              public boolean showBiome = true;
-              public boolean showPing = true;
-              public boolean showTime = true;
-              public boolean safeMode = false;
-              """
-              txt = re.sub(r"(class\s+AetherConfig[^{]*\{)", r"\1\n" + add, txt, count=1)
-              open(p, "w", encoding="utf-8").write(txt)
-
-          for p in glob.glob("**/AetherHudRenderer.java", recursive=True):
-              txt = open(p, encoding="utf-8").read()
-              add = """
-              public static final int[][] THEME_GRADIENTS = new int[][]{
-                  {0xFF7C4DFF, 0xFF00E5FF}, {0xFFFF4081, 0xFFFFAB40}, {0xFF00E676, 0xFF1DE9B6},
-                  {0xFF2979FF, 0xFF651FFF}, {0xFFFF1744, 0xFFD500F9}, {0xFFFFD600, 0xFFFF6D00},
-                  {0xFF00B0FF, 0xFF00E676}, {0xFFE040FB, 0xFF536DFE}, {0xFFFF5252, 0xFFFF8A80},
-                  {0xFF64FFDA, 0xFF18FFFF}, {0xFFB388FF, 0xFF8C9EFF}, {0xFF69F0AE, 0xFFB9F6CA},
-                  {0xFFFFFFFF, 0xFF90A4AE}
-              };
-              """
-              txt = re.sub(r"(class\s+AetherHudRenderer[^{]*\{)", r"\1\n" + add, txt, count=1)
-              open(p, "w", encoding="utf-8").write(txt)
-          '
+        run: unzip -q "*.zip"
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
